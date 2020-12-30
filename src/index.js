@@ -1,9 +1,41 @@
 import React from 'react'
 
 import useRect from './useRect'
+import useWindowRect from './useWindowRect'
 import useIsomorphicLayoutEffect from './useIsomorphicLayoutEffect'
 
 const defaultEstimateSize = () => 50
+
+export function useVirtualWindow({
+  windowRef,
+  scrollToFn,
+  horizontal,
+  parentRef,
+  ...rest
+}) {
+  const scrollKey = horizontal ? 'scrollX' : 'scrollY'
+  const defaultScrollToFn = React.useCallback(
+    offset => {
+      if (windowRef.current) {
+        windowRef.current[scrollKey] = offset
+      }
+    },
+    [scrollKey, windowRef]
+  )
+
+  return useVirtual({
+    ...rest,
+    horizontal,
+    parentRef,
+    scrollToFn: scrollToFn || defaultScrollToFn,
+    onScrollElement: windowRef,
+    scrollOffsetFn() {
+      const bounds = parentRef.current.getBoundingClientRect();
+      return horizontal ? bounds.left * -1 : bounds.top * -1;
+    },
+    useObserver: () => useWindowRect(windowRef),
+  });
+}
 
 export function useVirtual({
   size = 0,
@@ -15,6 +47,8 @@ export function useVirtual({
   horizontal,
   scrollToFn,
   useObserver,
+  onScrollElement,
+  scrollOffsetFn,
 }) {
   const sizeKey = horizontal ? 'width' : 'height'
   const scrollKey = horizontal ? 'scrollLeft' : 'scrollTop'
@@ -69,12 +103,12 @@ export function useVirtual({
 
   const [range, setRange] = React.useState({ start: 0, end: 0 })
 
+  const element = onScrollElement ? onScrollElement.current : parentRef.current
   useIsomorphicLayoutEffect(() => {
-    const element = parentRef.current
     if (!element) { return }
 
     const onScroll = () => {
-      const scrollOffset = element[scrollKey]
+      const scrollOffset = scrollOffsetFn ? scrollOffsetFn() : element[scrollKey]
       latestRef.current.scrollOffset = scrollOffset
       setRange(prevRange => calculateRange(latestRef.current, prevRange))
     }
@@ -90,7 +124,7 @@ export function useVirtual({
     return () => {
       element.removeEventListener('scroll', onScroll)
     }
-  }, [parentRef.current, scrollKey, size /* required */, outerSize /* required */])
+  }, [element, scrollKey, size /* required */, outerSize /* required */])
 
   const virtualItems = React.useMemo(() => {
     const virtualItems = []
@@ -185,8 +219,8 @@ export function useVirtual({
         align === 'center'
           ? measurement.start + measurement.size / 2
           : align === 'end'
-          ? measurement.end
-          : measurement.start
+            ? measurement.end
+            : measurement.start
 
       scrollToOffset(toOffset, { align, ...rest })
     },

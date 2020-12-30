@@ -42,6 +42,36 @@ export default function useRect(nodeRef) {
   return rect
 }
 
+export function useWindowRect(windowObj, nodeRef) {
+  const [rect, dispatch] = React.useReducer(rectReducer, null)
+  useIsomorphicLayoutEffect(() => {
+    dispatch({
+      rect: {
+        height: windowObj.innerHeight,
+        width: windowObj.innerWidth,
+      }
+    });
+  }, [windowObj])
+
+  React.useEffect(() => {
+    const resizeHandler = () => {
+      dispatch({
+        rect: {
+          height: windowObj.innerHeight,
+          width: windowObj.innerWidth,
+        }
+      });
+    };
+    resizeHandler();
+    windowObj.addEventListener("resize", resizeHandler);
+    return () => {
+      windowObj.removeEventListener("resize", resizeHandler);
+    };
+  }, [nodeRef, windowObj]);
+
+  return rect
+}
+
 function rectReducer(state, action) {
   const rect = action.rect
   if (!state || state.height !== rect.height || state.width !== rect.width) {

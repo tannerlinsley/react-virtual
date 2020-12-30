@@ -43,6 +43,7 @@ Enjoy this library? Try them all! [React Table](https://github.com/tannerlinsley
 - Dynamic Rows/Cols/Grid- [CodeSandbox](https://codesandbox.io/s/github/tannerlinsley/react-virtual/tree/master/examples/dynamic) - [Source](./examples/dynamic)
 - Smooth Scrolling - [CodeSandbox](https://codesandbox.io/s/github/tannerlinsley/react-virtual/tree/master/examples/smooth-scroll) - [Source](./examples/smooth-scroll)
 - Infinite Scrolling - [CodeSandbox](https://codesandbox.io/s/github/tannerlinsley/react-virtual/tree/master/examples/infinite-scroll) - [Source](./examples/infinite-scroll)
+- Use Window Scrolling - [CodeSandbox](https://codesandbox.io/s/github/tannerlinsley/react-virtual/tree/master/examples/browser-window) - [Source](./examples/browser-window)
 
 ## Sponsors
 
@@ -139,10 +140,16 @@ This library is being built and maintained by me, @tannerlinsley and I am always
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+- [Documentation](#documentation)
 - [Installation](#installation)
+- [Why?](#why)
 - [Sample](#sample)
 - [API](#api)
   - [`useVirtual`](#usevirtual)
+    - [Options](#options)
+    - [Returns](#returns)
+  - [`useVirtualWindow`](#usevirtualwindow)
+    - [Options](#options-1)
 - [Contributors ✨](#contributors-)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -278,6 +285,12 @@ const {
 - `paddingEnd: Integer`
   - Defaults to `0`
   - The amount of padding in pixels to add to the end of the virtual list
+- `onScrollElement: React.useRef(DOMElement)`
+  - Optional
+  - Allows using a different element to bind the `onScroll` event to
+- `scrollOffsetFn: Function() => number`
+  - Optional
+  - This function, if passed, is called on scroll to get the scroll offest rather than using `parentRef`'s `width` or `height`
 
 ### Returns
 
@@ -313,6 +326,35 @@ const {
     - `center` places the offset in the center of the visible scroll area
     - `end` places the offset at the bottom/right of the visible scroll area
     - `auto` brings the offset into the visible scroll area either at the start or end, depending on which is closer. If the offset is already in view, it is placed at the `top/left` of the visible scroll area.
+
+## `useVirtualWindow`
+
+```js
+const {
+  virtualItems: [
+    { index, start, size, end, measureRef },
+    /* ... */
+  ],
+  totalSize,
+  scrollToIndex,
+  scrollToOffset,
+} = useVirtualWindow({
+  windowObj,
+  size,
+  parentRef,
+  estimateSize,
+  overscan,
+  horizontal,
+})
+```
+
+### Options
+
+Supports all the same options as `useVirtual` along with:
+
+- `windowObj: Window`
+  - **Required**
+  - This window element whose scroll offset will be used for scrolling the `parentRef`
 
 # Contributors ✨
 
