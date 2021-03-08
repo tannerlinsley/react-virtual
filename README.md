@@ -283,7 +283,7 @@ const {
    - Allows using a different element to bind the `onScroll` event to
  - `scrollOffsetFn: Function() => number`
    - Optional
-   - This function, if passed, is called on scroll to get the scroll offest rather than using `parentRef`'s `width` or `height`
+   - This function, if passed, is called on scroll to get the scroll offset rather than using `parentRef`'s `width` or `height`
 
 ### Returns
 
