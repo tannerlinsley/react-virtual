@@ -98,10 +98,10 @@ describe('useVirtual list', () => {
     render(<List {...props} onRef={onRef} />)
 
     expect(screen.queryByText('Row 0')).toBeInTheDocument()
-    expect(screen.queryByText('Row 5')).toBeInTheDocument()
-    expect(screen.queryByText('Row 6')).not.toBeInTheDocument()
+    expect(screen.queryByText('Row 8')).toBeInTheDocument()
+    expect(screen.queryByText('Row 9')).not.toBeInTheDocument()
 
-    expect(useVirtual).toHaveBeenCalledTimes(4)
+    expect(useVirtual).toHaveBeenCalledTimes(9)
   })
   it('should render given dynamic size after scroll', () => {
     const onRef = virtualRow => el => {
@@ -114,13 +114,13 @@ describe('useVirtual list', () => {
     render(<List {...props} onRef={onRef} />)
 
     expect(screen.queryByText('Row 0')).toBeInTheDocument()
-    expect(screen.queryByText('Row 5')).toBeInTheDocument()
-    expect(screen.queryByText('Row 6')).not.toBeInTheDocument()
+    expect(screen.queryByText('Row 8')).toBeInTheDocument()
+    expect(screen.queryByText('Row 9')).not.toBeInTheDocument()
 
     fireEvent.scroll(parentRef.current, { target: { scrollTop: 375 } })
 
-    expect(screen.queryByText('Row 9')).toBeInTheDocument()
-    expect(screen.queryByText('Row 15')).toBeInTheDocument()
-    expect(screen.queryByText('Row 16')).not.toBeInTheDocument()
+    expect(screen.queryByText('Row 11')).toBeInTheDocument()
+    expect(screen.queryByText('Row 16')).toBeInTheDocument()
+    expect(screen.queryByText('Row 17')).not.toBeInTheDocument()
   })
 })

@@ -324,6 +324,7 @@ const {
     - `center` places the offset in the center of the visible scroll area
     - `end` places the offset at the bottom/right of the visible scroll area
     - `auto` brings the offset into the visible scroll area either at the start or end, depending on which is closer. If the offset is already in view, it is placed at the `top/left` of the visible scroll area.
+- `isScrolling` - this parameter will be true while the list is being scrolled.
 
 # Contributors ✨
 
