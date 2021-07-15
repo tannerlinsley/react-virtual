@@ -148,6 +148,7 @@ export function useVirtual({
 
       const item = {
         ...measurement,
+        isVisible: i >= range.start && i <= range.end,
         measureRef: el => {
           if (el) {
             const measuredSize = measureSizeRef.current(el, horizontal)

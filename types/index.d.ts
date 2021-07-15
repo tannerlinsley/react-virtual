@@ -13,6 +13,7 @@ export type VirtualItem = {
   end: number
   size: number
   measureRef: (el: HTMLElement | null) => void
+  isVisible: boolean
 }
 
 export interface Range {

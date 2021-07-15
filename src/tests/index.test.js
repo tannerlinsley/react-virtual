@@ -43,6 +43,7 @@ function List({
             <div
               key={virtualRow.index}
               ref={onRef ? onRef(virtualRow) : undefined}
+              data-is-visible={virtualRow.isVisible}
               style={{
                 position: 'absolute',
                 top: 0,
@@ -75,7 +76,14 @@ describe('useVirtual list', () => {
     render(<List {...props} />)
 
     expect(screen.queryByText('Row 0')).toBeInTheDocument()
-    expect(screen.queryByText('Row 4')).toBeInTheDocument()
+    expect(screen.queryByText('Row 3')).toHaveAttribute(
+      'data-is-visible',
+      'true'
+    )
+    expect(screen.queryByText('Row 4')).toHaveAttribute(
+      'data-is-visible',
+      'false'
+    )
     expect(screen.queryByText('Row 5')).not.toBeInTheDocument()
 
     expect(useVirtual).toHaveBeenCalledTimes(3)

@@ -309,6 +309,8 @@ const {
       - The ending measurement of the item
     - `measureRef: React.useRef | Function(el: DOMElement) => void 0`
       - The ref/function to place on the rendered element to enable dynamic measurement rendering
+    - `isVisible: Boolean`
+      - This value is true when item is visible in viewport
 - `totalSize: Integer`
   - The total size of the entire virtualizer
   - When using dynamic measurement refs, this number may change as items are measured after they are rendered.
