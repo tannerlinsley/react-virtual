@@ -1,6 +1,6 @@
 {
   "name": "react-virtual",
-  "version": "0.0.0",
+  "version": "1.0.0-semantic-release",
   "description": "Hooks for virtualizing scrollable elements in React",
   "author": "tannerlinsley",
   "license": "MIT",
@@ -26,14 +26,22 @@
     "start": "rollup -c -w",
     "prepare": "yarn build",
     "prepublishOnly": "yarn test:ci && yarn formatReadme",
-    "release": "yarn publish",
-    "releaseNext": "yarn publish --tag next",
     "format": "prettier {src,src/**,example/src,example/src/**}/*.{md,js,jsx,tsx} --write",
     "formatReadme": "yarn doctoc",
     "doctoc": "npx doctoc --maxlevel 2 README.md",
     "jump2header": "npx @strdr4605/jump2header --header 'documentation' --start 'Installation' -e 2 --silent -l 2",
     "stats": "open ./stats.html",
     "dtslint": "dtslint types"
+  },
+  "release": {
+    "branches": [
+      "1.x",
+      "master",
+      {
+        "name": "next",
+        "prerelease": true
+      }
+    ]
   },
   "files": [
     "dist",
