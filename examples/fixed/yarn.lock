@@ -1247,11 +1247,6 @@
   dependencies:
     ramda "^0.26.0"
 
-"@scarf/scarf@^1.0.0":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@scarf/scarf/-/scarf-1.0.5.tgz#accee0bce88a9047672f7c8faf3cada59c996b81"
-  integrity sha512-9WKaGVpQH905Aqkk+BczFEeLQxS07rl04afFRPUG9IcSlOwmo5EVVuuNu0d4M9LMYucObvK0LoAe+5HfMW2QhQ==
-
 "@svgr/babel-plugin-add-jsx-attribute@^4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-4.2.0.tgz#dadcb6218503532d6884b210e7f3c502caaa44b1"
@@ -4675,9 +4670,9 @@ hmac-drbg@^1.0.0:
     minimalistic-crypto-utils "^1.0.1"
 
 hosted-git-info@^2.1.4:
-  version "2.8.7"
-  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.7.tgz#4d2e0d5248e1cfabc984b0f6a6d75fe36e679511"
-  integrity sha512-ChkjQtKJ3GI6SsI4O5jwr8q8EPrWCnxuc4Tbx+vRI5x6mDOpjKKltNo1lRlszw3xwgTOSns1ZRBiMmmwpcvLxg==
+  version "2.8.9"
+  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.9.tgz#dffc0bf9a21c02209090f2aa69429e1414daf3f9"
+  integrity sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==
 
 hpack.js@^2.1.6:
   version "2.1.6"
@@ -8258,14 +8253,12 @@ react-scripts@3.0.1:
   optionalDependencies:
     fsevents "2.0.6"
 
-react-virtual@^2.0.0:
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/react-virtual/-/react-virtual-2.1.8.tgz#e65e467c6327e1e4e6c130a56e24cb2c3f8d9c29"
-  integrity sha512-vvc07dM3Wxmx/gTqxCY4cKV66lIQnhGAdeVRt9W83/PYcXuuvRMtg30z9sL1AAsfbQMk6hhkO/Dhx/0vJuXE8w==
+react-virtual@^2.1.8:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/react-virtual/-/react-virtual-2.7.1.tgz#8bf977e780df80af692f440d627ba7a5776f0de5"
+  integrity sha512-UziFNaew48GIoTPB4svPT7NNEpKRvEXv0LIJ2FBdmRdGKspFvtxzmPfyUdH/+3yp8LqgTLayItpsilZ9FO2VAw==
   dependencies:
     "@reach/observe-rect" "^1.1.0"
-    "@scarf/scarf" "^1.0.0"
-    ts-toolbelt "^6.4.2"
 
 react@^16.8.6:
   version "16.13.0"
@@ -9603,11 +9596,6 @@ ts-pnp@^1.0.0:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/ts-pnp/-/ts-pnp-1.1.6.tgz#389a24396d425a0d3162e96d2b4638900fdc289a"
   integrity sha512-CrG5GqAAzMT7144Cl+UIFP7mz/iIhiy+xQ6GGcnjTezhALT02uPMRw7tgDSESgB5MsfKt55+GPWw4ir1kVtMIQ==
-
-ts-toolbelt@^6.4.2:
-  version "6.7.4"
-  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.7.4.tgz#30e6999578a82ed4636563cb525bb3664a255760"
-  integrity sha512-cP8q7BnIyuevMyBpq+TVKf3NvSS70S+BLdhzHVeV/5WNPMoUxN5YWMKgUd54qAwWgk6n2USHi/2XFIxZJa+30g==
 
 tslib@^1.8.1, tslib@^1.9.0:
   version "1.11.0"
