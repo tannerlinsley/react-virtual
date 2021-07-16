@@ -1,14 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
-import { useInfiniteQuery } from "react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useInfiniteQuery
+} from "react-query";
 
 import "./styles.css";
 
 import { useVirtual } from "react-virtual";
 
 // axios override to fake "get" a website
-// delete lines 9-36 if you are reusing this code outside of this demo
+// delete lines 14-40 if you are reusing this code outside of this demo
 Object.assign(axios, {
   ...axios,
   get: url => {
@@ -41,29 +45,29 @@ function App() {
     data,
     error,
     isFetching,
-    isFetchingMore,
-    fetchMore,
-    canFetchMore
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage
   } = useInfiniteQuery(
     "projects",
-    async (key, nextPage = 0) => {
+    async ({ pageParam = 0 }) => {
       const { data } = await axios.get(
-        "https://demoapi.com?_limit=10&_page=" + nextPage
+        "https://demoapi.com?_limit=10&_page=" + pageParam
       );
       return data;
     },
     {
-      getFetchMore: (lastGroup, groups) =>
-        lastGroup.length ? groups.length : false
+      getNextPageParam: (lastPage, pages) =>
+        lastPage.length ? pages.length : undefined
     }
   );
 
-  const flatPosts = data ? data.flat(1) : [];
+  const flatPosts = data ? data.pages.flat(1) : [];
 
   const parentRef = React.useRef();
 
   const rowVirtualizer = useVirtual({
-    size: canFetchMore ? flatPosts.length + 1 : flatPosts.length,
+    size: hasNextPage ? flatPosts.length + 1 : flatPosts.length,
     parentRef,
     estimateSize: React.useCallback(() => 100, [])
   });
@@ -77,23 +81,23 @@ function App() {
 
     if (
       lastItem.index === flatPosts.length - 1 &&
-      canFetchMore &&
-      !isFetchingMore
+      hasNextPage &&
+      !isFetchingNextPage
     ) {
-      fetchMore();
+      fetchNextPage();
     }
   }, [
-    canFetchMore,
-    fetchMore,
+    hasNextPage,
+    fetchNextPage,
     flatPosts.length,
-    isFetchingMore,
+    isFetchingNextPage,
     rowVirtualizer.virtualItems
   ]);
 
   return (
     <div>
       <p>
-        This infite scroll example uses React Query's useInfiniteScroll hook to
+        This infite scroll example uses React Query's useInfiniteQuery hook to
         fetch infinite data from a posts endpoint and then a rowVirtualizer is
         used along with a loader-row placed at the bottom of the list to trigger
         the next page to load.
@@ -143,7 +147,7 @@ function App() {
                   }}
                 >
                   {isLoaderRow
-                    ? canFetchMore
+                    ? hasNextPage
                       ? "Loading more..."
                       : "Nothing more to load"
                     : post}
@@ -154,7 +158,7 @@ function App() {
         </div>
       )}
       <div>
-        {isFetching && !isFetchingMore ? "Background Updating..." : null}
+        {isFetching && !isFetchingNextPage ? "Background Updating..." : null}
       </div>
       <br />
       <br />
@@ -170,4 +174,10 @@ function App() {
 }
 
 const rootElement = document.getElementById("root");
-ReactDOM.render(<App />, rootElement);
+const queryClient = new QueryClient();
+ReactDOM.render(
+  <QueryClientProvider client={queryClient}>
+    <App />
+  </QueryClientProvider>,
+  rootElement
+);
