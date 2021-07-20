@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import * as React from 'react'
 
 import { useVirtual as useVirtualImpl } from '../index'
@@ -89,7 +89,7 @@ describe('useVirtual list', () => {
 
     expect(useVirtual).toHaveBeenCalledTimes(3)
   })
-  it('should render given dynamic size', () => {
+  it('should render given dynamic size', async () => {
     const onRef = virtualRow => el => {
       if (el) {
         jest.spyOn(el, 'offsetHeight', 'get').mockImplementation(() => 25)
@@ -100,12 +100,12 @@ describe('useVirtual list', () => {
     render(<List {...props} onRef={onRef} />)
 
     expect(screen.queryByText('Row 0')).toBeInTheDocument()
-    expect(screen.queryByText('Row 5')).toBeInTheDocument()
-    expect(screen.queryByText('Row 6')).not.toBeInTheDocument()
+    await waitFor(() => expect(screen.queryByText('Row 8')).toBeInTheDocument())
+    expect(screen.queryByText('Row 9')).not.toBeInTheDocument()
 
-    expect(useVirtual).toHaveBeenCalledTimes(4)
+    expect(useVirtual).toHaveBeenCalledTimes(8)
   })
-  it('should render given dynamic size after scroll', () => {
+  it('should render given dynamic size after scroll', async () => {
     const onRef = virtualRow => el => {
       if (el) {
         jest.spyOn(el, 'offsetHeight', 'get').mockImplementation(() => 25)
@@ -116,14 +116,17 @@ describe('useVirtual list', () => {
     render(<List {...props} onRef={onRef} />)
 
     expect(screen.queryByText('Row 0')).toBeInTheDocument()
-    expect(screen.queryByText('Row 5')).toBeInTheDocument()
-    expect(screen.queryByText('Row 6')).not.toBeInTheDocument()
+    await waitFor(() => expect(screen.queryByText('Row 8')).toBeInTheDocument())
+    expect(screen.queryByText('Row 9')).not.toBeInTheDocument()
 
-    fireEvent.scroll(parentRef.current, { target: { scrollTop: 375 } })
+    fireEvent.scroll(parentRef.current, { target: { scrollTop: 75 } })
 
-    expect(screen.queryByText('Row 9')).toBeInTheDocument()
-    expect(screen.queryByText('Row 15')).toBeInTheDocument()
-    expect(screen.queryByText('Row 16')).not.toBeInTheDocument()
+    expect(screen.queryByText('Row 1')).not.toBeInTheDocument()
+    expect(screen.queryByText('Row 2')).toBeInTheDocument()
+    await waitFor(() =>
+      expect(screen.queryByText('Row 11')).toBeInTheDocument()
+    )
+    expect(screen.queryByText('Row 12')).not.toBeInTheDocument()
   })
   it('should use rangeExtractor', () => {
     render(<List {...props} rangeExtractor={() => [0, 1]} />)

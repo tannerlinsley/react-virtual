@@ -44,7 +44,9 @@ export function useVirtual({
 }) {
   const sizeKey = horizontal ? 'width' : 'height'
   const scrollKey = horizontal ? 'scrollLeft' : 'scrollTop'
-  const latestRef = React.useRef({})
+  const latestRef = React.useRef({
+    scrollOffset: 0,
+  })
   const useMeasureParent = useObserver || useRect
 
   const { [sizeKey]: outerSize } = useMeasureParent(parentRef) || {
@@ -99,10 +101,26 @@ export function useVirtual({
   const scrollOffsetFnRef = React.useRef(scrollOffsetFn)
   scrollOffsetFnRef.current = scrollOffsetFn
 
+  const rangeTimeoutIdRef = React.useRef(null)
+
+  const cancelAsyncRange = React.useCallback(() => {
+    if (rangeTimeoutIdRef.current !== null) {
+      clearTimeout(rangeTimeoutIdRef.current)
+      rangeTimeoutIdRef.current = null
+    }
+  }, [])
+
+  useIsomorphicLayoutEffect(() => {
+    rangeTimeoutIdRef.current = setTimeout(() => {
+      setRange(prevRange => calculateRange(latestRef.current, prevRange))
+    })
+    return () => cancelAsyncRange()
+  }, [measurements, outerSize, cancelAsyncRange])
+
   useIsomorphicLayoutEffect(() => {
     if (!element) {
       setRange({ start: 0, end: 0 })
-      latestRef.current.scrollOffset = undefined
+      latestRef.current.scrollOffset = 0
 
       return
     }
@@ -111,8 +129,10 @@ export function useVirtual({
       const scrollOffset = scrollOffsetFnRef.current
         ? scrollOffsetFnRef.current(event)
         : element[scrollKey]
+
       latestRef.current.scrollOffset = scrollOffset
 
+      cancelAsyncRange()
       setRange(prevRange => calculateRange(latestRef.current, prevRange))
     }
 
@@ -127,7 +147,7 @@ export function useVirtual({
     return () => {
       element.removeEventListener('scroll', onScroll)
     }
-  }, [element, scrollKey, size, outerSize])
+  }, [element, scrollKey, cancelAsyncRange])
 
   const measureSizeRef = React.useRef(measureSize)
   measureSizeRef.current = measureSize
