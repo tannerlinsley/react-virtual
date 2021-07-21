@@ -285,8 +285,9 @@ const {
  - `scrollOffsetFn: Function(event?: Event) => number`
    - Optional
    - This function, if passed, is called on scroll to get the scroll offest rather than using `parentRef`'s `width` or `height`
-- `keyExtractor: Function(index) => String | Integer`
+- `keyExtractor: Function(index: Integer) => String | Integer`
   - Optional
+  - Defaults to `index => index`
   - This function receives the index of each item and should return the item's unique ID.
   - This function should be passed whenever dynamic measurement rendering is enabled and the size or order of items in the list changes.
 - `rangeExtractor: Function(range: {start: number; end: number; overscan: number; size: number}) => number[]`
@@ -298,6 +299,8 @@ const {
 
 - `virtualItems: Array<item>`
   - `item: Object`
+    - `key: String | Integer`
+      - The key of the item, calculated via `keyExtractor`
     - `index: Integer`
       - The index of the item
     - `start: Integer`

@@ -7,7 +7,10 @@ interface ScrollToOptions {
 interface ScrollToOffsetOptions extends ScrollToOptions {}
 interface ScrollToIndexOptions extends ScrollToOptions {}
 
+type Key = number | string
+
 export type VirtualItem = {
+  key: Key
   index: number
   start: number
   end: number
@@ -43,7 +46,7 @@ declare function useVirtual<T>(options: {
     height: number
     [key: string]: any
   }
-  keyExtractor?: (index: number) => number | string
+  keyExtractor?: (index: number) => Key
   onScrollElement?: React.RefObject<HTMLElement>
   scrollOffsetFn?: (event?: Event) => number
   rangeExtractor?: (range: Range) => number[]
